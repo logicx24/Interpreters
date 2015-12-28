@@ -3,9 +3,9 @@ import os.path
 
 class BrainFuckException(object):
 
-	def throw(message):
+	def throw(self, message):
 		print(message)
-		sys.exit()
+		exit()
 
 class Brainfuck(object):
 
@@ -60,8 +60,8 @@ class Brainfuck(object):
 	def commaFunc(self):
 		print('Please enter a single character below.')
 		userInput = input()
-		if len(userInput) > 1:
-			self.exceptionObj.throw('Only enter one character to the input.')
+		# if len(userInput) > 1:
+		# 	self.exceptionObj.throw('Only enter one character to the input.')
 		self.programArray[self.counter] = int(userInput)
 
 	def functions(self):
@@ -78,18 +78,18 @@ class Brainfuck(object):
 
 	def loopIndex(self):
 		counterToIndex = {}
-		counter = 0
+		loopNumber = 0
 		openToClosing = {}
 		closingToOpening = {}
 		for index, char in enumerate(self.code):
 			if char == "[":
-				counter += 1
-				counterToIndex[counter] = index
+				loopNumber += 1
+				counterToIndex[loopNumber] = index
 			elif char == "]":
-				if counter in counterToIndex:
-					openToClosing[counterToIndex[counter]] = index
-					closingToOpening[index] = counterToIndex[counter]
-				counter -= 1
+				if loopNumber in counterToIndex:
+					openToClosing[counterToIndex[loopNumber]] = index
+					closingToOpening[index] = counterToIndex[loopNumber]
+				loopNumber -= 1
 		return openToClosing, closingToOpening
 
 	def executeCode(self):
@@ -127,7 +127,7 @@ if __name__ == "__main__":
 	brainfuck = Brainfuck()
 	if len(argv) == 1:
 		brainfuck.repl()
-	elif len(argv) == 2:
+	elif len(argv) >= 2:
 		if os.path.isfile(argv[1]):
 			brainfuck.setFileCode(argv[1])
 			brainfuck.executeCode()
